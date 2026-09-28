@@ -1,0 +1,92 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 28,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "release",
+      "displayName": "Native release build of the static library",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "debug",
+      "displayName": "Native debug build of the static library",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "mac-universal-release",
+      "inherits": "release",
+      "displayName": "macOS universal binary (arm64 + x86_64)",
+      "binaryDir": "${sourceDir}/build/mac-universal",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "cacheVariables": {
+        "CMAKE_OSX_ARCHITECTURES": "arm64;x86_64"
+      }
+    },
+    {
+      "name": "win-x64-release",
+      "displayName": "Windows x64 release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/win-x64",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "wasm",
+      "displayName": "WebAssembly engine (configure with emcmake)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/wasm",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "NEST_BUILD_WASM": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "release",
+      "configurePreset": "release"
+    },
+    {
+      "name": "debug",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "mac-universal-release",
+      "configurePreset": "mac-universal-release"
+    },
+    {
+      "name": "win-x64-release",
+      "configurePreset": "win-x64-release"
+    },
+    {
+      "name": "wasm",
+      "configurePreset": "wasm"
+    }
+  ]
+}

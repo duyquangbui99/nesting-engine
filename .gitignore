@@ -1,0 +1,7 @@
+build/
+out/
+.DS_Store
+.cache/
+compile_commands.json
+*.svg
+!docs/**/*.svg
